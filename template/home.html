@@ -11,7 +11,7 @@
             overflow-y: scroll;
         }
         #userInput {
-            width: 300px;
+            width: 200px;
         }
     </style>
 </head>
@@ -21,18 +21,34 @@
     <button onclick="sendMessage()">Enviar</button>
 
     <script>
+        function appendMessage(message, sender) {
+            const chatbox = document.getElementById("chatbox");
+            const messageDiv = document.createElement("div");
+            messageDiv.textContent = `${sender}: ${message}`;
+            chatbox.appendChild(messageDiv);
+        }
+
         function sendMessage() {
-            var input = document.getElementById('userInput');
-            var message = input.value;
-            input.value = "";
+            const userInput = document.getElementById("userInput");
+            const userMessage = userInput.value;
 
-            var chatbox = document.getElementById('chatbox');
-            chatbox.innerHTML += "Yo: " + message + "<br>";
+            if (userMessage.trim() !== "") {
+                // Agregar mensaje del usuario al chatbox
+                appendMessage(userMessage, "Usuario");
 
-            setTimeout(function() {
-                chatbox.innerHTML += "Chatbot: Esta es una respuesta predefinida.<br>";
-                chatbox.scrollTop = chatbox.scrollHeight;
-            }, 1000);
+                // Enviar mensaje al servidor Django para obtener respuesta del chatbot
+                fetch(`/chatbot/?message=${encodeURIComponent(userMessage)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const botMessage = data.message;
+                        // Agregar respuesta del chatbot al chatbox
+                        appendMessage(botMessage, "ROBOT");
+                    })
+                    .catch(error => console.error("Error al enviar mensaje:", error));
+
+                // Limpiar el campo de entrada del usuario
+                userInput.value = "";
+            }
         }
     </script>
 </body>
