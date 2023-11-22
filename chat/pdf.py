@@ -10,6 +10,6 @@ def convert_pdf_to_txt(ruta_del_archivo, ruta_del_txt):
 
 
 # Uso de la función
-ruta_del_archivo = 'crucero.pdf'  # Reemplaza esto con la ruta a tu archivo PDF
-ruta_del_txt = 'chatbot.txt'  # Reemplaza esto con la ruta a tu archivo txt
+ruta_del_archivo = 'static/crucero.pdf'  # Reemplaza esto con la ruta a tu archivo PDF
+ruta_del_txt = 'static/chatbot.txt'  # Reemplaza esto con la ruta a tu archivo txt
 convert_pdf_to_txt(ruta_del_archivo, ruta_del_txt)
