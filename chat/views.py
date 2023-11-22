@@ -5,7 +5,6 @@ from django.http import HttpResponse
 def index(request):
     return render(request, "home.html")
 
-def ejemplo(request):
-    return render(request, "dos.html")
 
-
+def pdf(request):
+    return render(request, "pdf.html")
