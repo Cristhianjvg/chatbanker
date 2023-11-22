@@ -20,5 +20,6 @@ from chat import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index)
+    path('index', views.index),
+    path('vista2/', views.ejemplo)
 ]
