@@ -12,7 +12,6 @@ def index(request):
     else:
         return render(request, "home.html")
 
-def ejemplo(request):
-    return render(request, "dos.html")
 
-
+def pdf(request):
+    return render(request, "pdf.html")
