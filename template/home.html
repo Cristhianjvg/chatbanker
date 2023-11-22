@@ -1,55 +1,210 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Chat Simple</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BANCO DE LOJA</title>
     <style>
-        #chatbox {
-            height: 200px;
-            width: 300px;
-            border: 1px solid black;
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+            color: #333;
+        }
+        header {
+            background-color: #76BC21;
+            color: white;
+            text-align: center;
+            padding: 1em;
+        }
+        nav {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 0.5em;
+        }
+        nav a {
+            text-decoration: none;
+            color: white;
+            padding: 0.5em 1em;
+        }
+        section {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1em;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: 999; /* Asegura que el footer esté en el frente */
+        }
+        #chat-container {
+            position: fixed;
+            bottom: 140px; /* Ajusta la distancia desde la parte inferior */
+            right: 20px;
+            display: none;
+            max-width: 250px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            font-family: 'Arial', sans-serif;
+            z-index: 1000; /* Asegura que el chatbot esté en el frente */
+        }
+        #toggleButton {
+            cursor: pointer;
+            position: fixed;
+            bottom: 90px; /* Ajusta la distancia desde la parte inferior */
+            right: 20px;
             padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            z-index: 1001; /* Asegura que el botón esté en el frente */
+        }
+        #chatbox {
+            height: 300px;
             overflow-y: scroll;
+            padding: 10px;
         }
         #userInput {
-            width: 200px;
+            width: 100%;
+            padding: 8px;
+            border: none;
+            border-top: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        #sendButton {
+            width: 100%;
+            padding: 8px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .message-container {
+            display: flex;
+            justify-content: flex-start;
+            margin: 10px;
+        }
+        .user-message {
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 10px;
+            padding: 8px;
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+        .bot-message {
+            background-color: #333;
+            border-radius: 10px;
+            padding: 8px;
+            max-width: 70%;
+            word-wrap: break-word;
         }
     </style>
 </head>
 <body>
-    <div id="chatbox"></div>
-    <input id="userInput" type="text" placeholder="Escribe un mensaje...">
-    <button onclick="sendMessage()">Enviar</button>
+    <header>
+        <h1>BANCO DE LOJA</h1>
+    </header>
+    
+    <nav>
+        <a href="#inicio">Inicio</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#galeria">Galería</a>
+        <a href="#contacto">Contacto</a>
+    </nav>
 
-    <script>
-        function appendMessage(message, sender) {
-            const chatbox = document.getElementById("chatbox");
-            const messageDiv = document.createElement("div");
-            messageDiv.textContent = `${sender}: ${message}`;
-            chatbox.appendChild(messageDiv);
-        }
+    <section id="inicio">
+        <h2>¡Bienvenido a Nuestra Página!</h2>
+        <p>Descubre todo lo que ofrecemos.</p>
+        <img src=" "alt="Imagen de muestra">
+    </section>
 
-        function sendMessage() {
-            const userInput = document.getElementById("userInput");
-            const userMessage = userInput.value;
+    <section id="servicios">
+        <h2>Nuestros Servicios</h2>
+        <ul>
+            <li>Servicio 1</li>
+            <li>Servicio 2</li>
+            <li>Servicio 3</li>
+        </ul>
+    </section>
 
-            if (userMessage.trim() !== "") {
-                // Agregar mensaje del usuario al chatbox
-                appendMessage(userMessage, "Usuario");
+    <section id="galeria">
+        <h2>Galería</h2>
+        <div class="galeria-imagen">
+            <img src=" " alt="Imagen 1">
+            <p>Descripción de la imagen 1</p>
+        </div>
+        <div class="galeria-imagen">
+            <img src=" " alt="Imagen 2">
+            <p>Descripción de la imagen 2</p>
+        </div>
+    </section>
 
-                // Enviar mensaje al servidor Django para obtener respuesta del chatbot
-                fetch(`/chatbot/?message=${encodeURIComponent(userMessage)}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        const botMessage = data.message;
-                        // Agregar respuesta del chatbot al chatbox
-                        appendMessage(botMessage, "ROBOT");
-                    })
-                    .catch(error => console.error("Error al enviar mensaje:", error));
+    <section id="contacto">
+        <h2>Contacto</h2>
+        <form>
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required><br>
 
-                // Limpiar el campo de entrada del usuario
+            <label for="email">Correo Electrónico:</label>
+            <input type="email" id="email" name="email" required><br>
+
+            <label for="mensaje">Mensaje:</label><br>
+            <textarea id="mensaje" name="mensaje" rows="4" required></textarea><br>
+
+            <input type="submit" value="Enviar">
+        </form>
+    </section>
+
+    <footer>
+        <div id="toggleButton" onclick="toggleChat()">Ralf</div>
+
+        <div id="chat-container">
+            <div id="chatbox"></div>
+            <input id="userInput" type="text" placeholder="Escribe un mensaje...">
+            <button id="sendButton" onclick="sendMessage()">Enviar</button>
+        </div>
+    
+        <script>
+            function toggleChat() {
+                var chatContainer = document.getElementById('chat-container');
+                chatContainer.style.display = (chatContainer.style.display === 'none' || chatContainer.style.display === '') ? 'block' : 'none';
+            }
+    
+            function sendMessage() {
+                var userInput = document.getElementById('userInput');
+                var message = userInput.value;
+    
+                if (message.trim() === "") {
+                    return;
+                }
+    
+                var chatbox = document.getElementById('chatbox');
+                var userMessage = '<div class="message-container"><div class="user-message">' + message + '</div></div>';
+                chatbox.innerHTML += userMessage;
+    
+                setTimeout(function() {
+                    var botMessage = '<div class="message-container"><div class="bot-message">Esta es una respuesta predefinida.</div></div>';
+                    chatbox.innerHTML += botMessage;
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                }, 500);
+    
                 userInput.value = "";
             }
-        }
-    </script>
+        </script>
+        <p>&copy; 2023 BANCO DE LOJA</p>
+    </footer>
 </body>
 </html>
