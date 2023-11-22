@@ -55,8 +55,6 @@ def respuesta_predefinida(user_response):
 
 #Función para determinar la similitud del texto insertado y el corpus
 def response(user_response):
-    # print(response(user_response)+  "asdjfkñasl")
-    req_tfidf = 0
     if user_response != 'salir':
         if user_response == 'gracias' or user_response == 'muchas gracias':
             flag = True
