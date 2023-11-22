@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Simple</title>
+    <style>
+        #chatbox {
+            height: 200px;
+            width: 300px;
+            border: 1px solid black;
+            padding: 10px;
+            overflow-y: scroll;
+        }
+        #userInput {
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div id="chatbox"></div>
+    <input id="userInput" type="text" placeholder="Escribe un mensaje...">
+    <button onclick="sendMessage()">Enviar</button>
+
+    <script>
+        function sendMessage() {
+            var input = document.getElementById('userInput');
+            var message = input.value;
+            input.value = "";
+
+            var chatbox = document.getElementById('chatbox');
+            chatbox.innerHTML += "Yo: " + message + "<br>";
+
+            setTimeout(function() {
+                chatbox.innerHTML += "Chatbot: Esta es una respuesta predefinida.<br>";
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
