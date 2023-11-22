@@ -181,29 +181,52 @@
             function toggleChat() {
                 var chatContainer = document.getElementById('chat-container');
                 chatContainer.style.display = (chatContainer.style.display === 'none' || chatContainer.style.display === '') ? 'block' : 'none';
+
+                // Si el chat se está mostrando, agrega un mensaje de bienvenida del chatbot
+                if (chatContainer.style.display === 'block') {
+                    addBotMessage("Hola, soy tu chatbot personal");
+                }
             }
-    
+
+            function addBotMessage(message) {
+                var chatbox = document.getElementById('chatbox');
+                var botMessage = '<div class="message-container" ><div class="bot-message">' + message + '</div></div>';
+                chatbox.innerHTML += botMessage;
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }
+        
             function sendMessage() {
                 var userInput = document.getElementById('userInput');
                 var message = userInput.value;
-    
+        
                 if (message.trim() === "") {
                     return;
                 }
-    
+        
                 var chatbox = document.getElementById('chatbox');
                 var userMessage = '<div class="message-container"><div class="user-message">' + message + '</div></div>';
                 chatbox.innerHTML += userMessage;
-    
-                setTimeout(function() {
-                    var botMessage = '<div class="message-container"><div class="bot-message">Esta es una respuesta predefinida.</div></div>';
-                    chatbox.innerHTML += botMessage;
+        
+                // Enviar el mensaje del usuario al servidor y recibir la respuesta
+                fetch('/index', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        // 'X-CSRFToken': getCookie('csrftoken')  // Asegúrate de tener una función para obtener la cookie CSRF
+                    },
+                    body: 'message=' + encodeURIComponent(message)
+                })
+                .then(response => response.text())
+                .then(botMessage => {
+                    var botMessageDiv = '<div class="message-container"><div class="bot-message">' + botMessage + '</div></div>';
+                    chatbox.innerHTML += botMessageDiv;
                     chatbox.scrollTop = chatbox.scrollHeight;
-                }, 500);
-    
+                });
+        
                 userInput.value = "";
             }
         </script>
+        
         <p>&copy; 2023 BANCO DE LOJA</p>
     </footer>
 </body>
