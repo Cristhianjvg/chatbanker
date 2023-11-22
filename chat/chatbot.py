@@ -8,13 +8,11 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from nltk.corpus import stopwords
 
-
 warnings.filterwarnings("ignore")
 
 flag = True
 f = open('static/chatbot.txt', 'r', errors='ignore')
 raw=f.read()
-
 nlp = spacy.load('es_core_news_sm')
 
 raw=raw.lower()# convertir en minúscula
@@ -48,9 +46,8 @@ def respuesta_predefinida(user_response):
     
     for i, pregunta in enumerate(preguntas):
         similitud = nlp(user_response).similarity(nlp(pregunta))
-        if similitud > 0.6:  # Puedes ajustar el umbral según tus necesidades
+        if similitud > 0.7:  # Puedes ajustar el umbral según tus necesidades
             return respuestas[i]
-
     return 
 
 #Función para determinar la similitud del texto insertado y el corpus
@@ -63,7 +60,6 @@ def response(user_response):
             respuesta_predef = respuesta_predefinida(user_response)
             print(respuesta_predef)
             if respuesta_predef != None:
-                
                 return  respuesta_predef
             else:
                 robo_response = ''
@@ -85,5 +81,3 @@ def response(user_response):
     else:
         flag = False
         return " Nos vemos pronto, ¡cuídate!"
-    
-   
