@@ -196,8 +196,7 @@
 
     <section id="pdf">
         <h2>Subir PDF y Visualizar</h2>
-
-        <input type="file" id="pdf-input" accept=".pdf" onchange="mostrarPDF(event)">
+        <input type="file" id="pdf-input" accept=".pdf" multiple onchange="mostrarPDF(event)">
         <label for="pdf-input" style="cursor: pointer; padding: 10px; background-color: #8FBF45; color: white;">
             Subir PDF
             
@@ -210,32 +209,36 @@
         <script>
             function mostrarPDF(event) {
                 var pdfInput = event.target;
-                var pdfContainer = document.getElementById('pdf-container');
                 var pdfList = document.getElementById('pdf-list');
     
-                // Limpiar el contenedor del PDF anterior
-                pdfContainer.innerHTML = "";
+                // Iterar sobre cada archivo seleccionado
+                for (var i = 0; i < pdfInput.files.length; i++) {
+                    var reader = new FileReader();
     
-                // Mostrar la vista previa del PDF seleccionado
-                var reader = new FileReader();
-                reader.onload = function () {
-                    var embed = document.createElement('embed');
-                    embed.setAttribute('src', reader.result);
-                    embed.setAttribute('width', '100%');
-                    embed.setAttribute('height', '500px');
-                    pdfContainer.appendChild(embed);
-                };
-                reader.readAsDataURL(pdfInput.files[0]);
+                    // Función de retrollamada para manejar cada archivo
+                    reader.onload = (function (file) {
+                        return function () {
+                            // Mostrar la vista previa del PDF seleccionado
+                            var embed = document.createElement('embed');
+                            embed.setAttribute('src', this.result);
+                            embed.setAttribute('width', '100%');
+                            embed.setAttribute('height', '500px');
+                            pdfContainer.appendChild(embed);
+                        };
+                    })(pdfInput.files[i]);
     
-                // Agregar el nombre del PDF a la lista
-                var pdfNombre = pdfInput.files[0].name;
-                var listItem = document.createElement('div');
-                listItem.textContent = pdfNombre;
-                pdfList.appendChild(listItem);
+                    // Leer el archivo como una URL de datos
+                    reader.readAsDataURL(pdfInput.files[i]);
+    
+                    // Agregar el nombre del PDF a la lista
+                    var pdfNombre = pdfInput.files[i].name;
+                    var listItem = document.createElement('div');
+                    listItem.textContent = pdfNombre;
+                    pdfList.appendChild(listItem);
+                }
             }
-        </script>  
-
-    </section>
+        </script>
+    </section>    
 
     <footer>
         <div id="toggleButton" onclick="toggleChat()">Ralp</div>
