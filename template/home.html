@@ -203,21 +203,12 @@
     
         <div id="pdf-container"></div>
     
-        <div id="pdf-list">
-            <div id="pdf-address-list"></div>
-        </div>
+        <div id="pdf-list"></div>
     
         <script>
             function mostrarPDF(event) {
                 var pdfInput = event.target;
                 var pdfList = document.getElementById('pdf-list');
-                var pdfAddressList = document.getElementById('pdf-address-list');
-    
-                // Limpiar el contenedor del PDF anterior
-                pdfAddressList.innerHTML = "";
-    
-                // Array para almacenar las URLs de datos de los PDF
-                var pdfURLs = [];
     
                 // Iterar sobre cada archivo seleccionado
                 for (var i = 0; i < pdfInput.files.length; i++) {
@@ -238,25 +229,15 @@
                     // Leer el archivo como una URL de datos
                     reader.readAsDataURL(pdfInput.files[i]);
     
-                    // Almacenar la URL de datos en el array
-                    pdfURLs.push(reader.result);
-    
-                    // Agregar el nombre del PDF y su dirección a la lista
+                    // Agregar el nombre del PDF a la lista
                     var pdfNombre = pdfInput.files[i].name;
                     var listItem = document.createElement('div');
                     listItem.textContent = pdfNombre;
                     pdfList.appendChild(listItem);
-    
-                    var addressItem = document.createElement('div');
-                    addressItem.textContent = "Dirección: " + reader.result;
-                    pdfAddressList.appendChild(addressItem);
                 }
-    
-                // Hacer algo con el array de URLs de datos (puedes guardarlo, enviarlo al servidor, etc.)
-                console.log("URLs de PDF:", pdfURLs);
             }
         </script>
-    </section>        
+    </section>    
 
     <footer>
         <div id="toggleButton" onclick="toggleChat()">Ralp</div>
