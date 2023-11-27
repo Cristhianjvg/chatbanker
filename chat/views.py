@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from .chatbot import response
 from .pdf import convert_pdf_to_txt
-
+from django.shortcuts import render, redirect
 @csrf_exempt
 def index(request):
     if request.method == 'POST':

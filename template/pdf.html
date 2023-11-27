@@ -145,55 +145,54 @@
     </header>
     
     <nav>
-        <a href="#inicio">Inicio</a>
-        <a href="#servicios">Servicios</a>
-        <a href="#galeria">Galería</a>
-        <a href="#contacto">Contacto</a>
-        <a href="vista2">SubirPDF</a>
+        <a href="/index">Inicio</a>
     </nav>
 
-    <section id="inicio">
-        <h2>¡Bienvenido a Nuestra Página!</h2>
-        <p>Descubre todo lo que ofrecemos.</p>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYwvG_PVNBmQJLVkDiAKgFAuRDS0wAo2exDQ&usqp=CAU"alt="Imagen de muestra">
-    </section>
-
-    <section id="servicios">
-        <h2>Nuestros Servicios</h2>
-        <ul>
-            <li>Servicio 1</li>
-            <li>Servicio 2</li>
-            <li>Servicio 3</li>
-        </ul>
-    </section>
-
-    <section id="galeria">
-        <h2>Galería</h2>
-        <div class="galeria-imagen">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYwvG_PVNBmQJLVkDiAKgFAuRDS0wAo2exDQ&usqp=CAU" alt="Imagen 1">
-            <p>Descripción de la imagen 1</p>
-        </div>
-        <div class="galeria-imagen">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYwvG_PVNBmQJLVkDiAKgFAuRDS0wAo2exDQ&usqp=CAU" alt="Imagen 2">
-            <p>Descripción de la imagen 2</p>
-        </div>
-    </section>
-
-    <section id="contacto">
-        <h2>Contacto</h2>
-        <form>
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre" required><br>
-
-            <label for="email">Correo Electrónico:</label>
-            <input type="email" id="email" name="email" required><br>
-
-            <label for="mensaje">Mensaje:</label><br>
-            <textarea id="mensaje" name="mensaje" rows="4" required></textarea><br>
-
-            <input type="submit" value="Enviar">
-        </form>
-    </section>  
+    <section id="pdf">
+        <h2>Subir PDF y Visualizar</h2>
+        <input type="file" id="pdf-input" accept=".pdf" multiple onchange="mostrarPDF(event)">
+        <label for="pdf-input" style="cursor: pointer; padding: 10px; background-color: #8FBF45; color: white;">
+            Subir PDF
+            
+        </label>
+    
+        <div id="pdf-container"></div>
+    
+        <div id="pdf-list"></div>
+    
+        <script>
+            function mostrarPDF(event) {
+                var pdfInput = event.target;
+                var pdfList = document.getElementById('pdf-list');
+    
+                // Iterar sobre cada archivo seleccionado
+                for (var i = 0; i < pdfInput.files.length; i++) {
+                    var reader = new FileReader();
+    
+                    // Función de retrollamada para manejar cada archivo
+                    reader.onload = (function (file) {
+                        return function () {
+                            // Mostrar la vista previa del PDF seleccionado
+                            var embed = document.createElement('embed');
+                            embed.setAttribute('src', this.result);
+                            embed.setAttribute('width', '100%');
+                            embed.setAttribute('height', '500px');
+                            pdfContainer.appendChild(embed);
+                        };
+                    })(pdfInput.files[i]);
+    
+                    // Leer el archivo como una URL de datos
+                    reader.readAsDataURL(pdfInput.files[i]);
+    
+                    // Agregar el nombre del PDF a la lista
+                    var pdfNombre = pdfInput.files[i].name;
+                    var listItem = document.createElement('div');
+                    listItem.textContent = pdfNombre;
+                    pdfList.appendChild(listItem);
+                }
+            }
+        </script>
+    </section>    
 
     <footer>
         <div id="toggleButton" onclick="toggleChat()">Ralp</div>
