@@ -163,14 +163,42 @@
         <script>
             function mostrarPDF(event) {
                 var pdfInput = event.target;
-                var pdfList = document.getElementById('pdf-list');
-    
+
+                // Crear un objeto FormData para enviar archivos al servidor
+                var formData = new FormData();
+
                 // Iterar sobre cada archivo seleccionado
                 for (var i = 0; i < pdfInput.files.length; i++) {
                     var reader = new FileReader();
-    
+
                     // Función de retrollamada para manejar cada archivo
                     reader.onload = (function (file) {
+                        return function () {
+                            // Agregar el archivo al objeto FormData
+                            formData.append('pdf_files', file);
+                        };
+                    })(pdfInput.files[i]);
+
+                    // Leer el archivo como una URL de datos
+                    reader.readAsDataURL(pdfInput.files[i]);
+                }
+
+                // Enviar archivos al servidor mediante Fetch
+                fetch('/ruta_del_endpoint_en_el_servidor/', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Manejar la respuesta del servidor si es necesario
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Error al enviar archivos:', error);
+                });
+
+                // Resto de la función para mostrar la vista previa y agregar a la lista
+                reader.onload = (function (file) {
                         return function () {
                             // Mostrar la vista previa del PDF seleccionado
                             var embed = document.createElement('embed');
@@ -180,16 +208,6 @@
                             pdfContainer.appendChild(embed);
                         };
                     })(pdfInput.files[i]);
-    
-                    // Leer el archivo como una URL de datos
-                    reader.readAsDataURL(pdfInput.files[i]);
-    
-                    // Agregar el nombre del PDF a la lista
-                    var pdfNombre = pdfInput.files[i].name;
-                    var listItem = document.createElement('div');
-                    listItem.textContent = pdfNombre;
-                    pdfList.appendChild(listItem);
-                }
             }
         </script>
     </section>    
