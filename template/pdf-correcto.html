@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BANCO DE LOJA</title>
+    <title>BANCO </title>
     <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
     <style>
         body {
@@ -148,74 +148,5 @@
         <a href="/index">Inicio</a>
     </nav>
 
-    <section id="pdf">
-        <h2>Subir PDF y Visualizar</h2>
-        <form action="/pdf" method="POST" enctype="multipart/form-data">
-            <input type="file" name="archivo">
-            <input type="submit"> 
-        </form>
-    </section>      
-
-    <footer>
-        <div id="toggleButton" onclick="toggleChat()">Ralp</div>
-
-        <div id="chat-container">
-            <div id="chatbox"></div>
-            <input id="userInput" type="text" placeholder="Escribe un mensaje...">
-            <button id="sendButton" onclick="sendMessage()">Enviar</button>
-        </div>
-    
-        <script>
-            function toggleChat() {
-                var chatContainer = document.getElementById('chat-container');
-                chatContainer.style.display = (chatContainer.style.display === 'none' || chatContainer.style.display === '') ? 'block' : 'none';
-
-                // Si el chat se está mostrando, agrega un mensaje de bienvenida del chatbot
-                if (chatContainer.style.display === 'block') {
-                    addBotMessage("Hola, soy tu chatbot personal");
-                }
-            }
-
-            function addBotMessage(message) {
-                var chatbox = document.getElementById('chatbox');
-                var botMessage = '<div class="message-container" ><div class="bot-message">' + message + '</div></div>';
-                chatbox.innerHTML += botMessage;
-                chatbox.scrollTop = chatbox.scrollHeight;
-            }
-        
-            function sendMessage() {
-                var userInput = document.getElementById('userInput');
-                var message = userInput.value;
-        
-                if (message.trim() === "") {
-                    return;
-                }
-        
-                var chatbox = document.getElementById('chatbox');
-                var userMessage = '<div class="message-container"><div class="user-message">' + message + '</div></div>';
-                chatbox.innerHTML += userMessage;
-        
-                // Enviar el mensaje del usuario al servidor y recibir la respuesta
-                fetch('/index', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        // 'X-CSRFToken': getCookie('csrftoken')  // Asegúrate de tener una función para obtener la cookie CSRF
-                    },
-                    body: 'message=' + encodeURIComponent(message)
-                })
-                .then(response => response.text())
-                .then(botMessage => {
-                    var botMessageDiv = '<div class="message-container"><div class="bot-message">' + botMessage + '</div></div>';
-                    chatbox.innerHTML += botMessageDiv;
-                    chatbox.scrollTop = chatbox.scrollHeight;
-                });
-        
-                userInput.value = "";
-            }
-        </script>
-        
-        <p>&copy; 2023 BANCO DEL HORIZONTE FINANCIERO</p>
-    </footer>
 </body>
 </html>

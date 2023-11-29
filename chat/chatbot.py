@@ -15,21 +15,21 @@ f = open('static/chatbot.txt', 'r', errors='ignore')
 raw=f.read()
 nlp = spacy.load('es_core_news_sm')
 
-# raw=raw.lower()# convertir en minúscula
-# nltk.download('punkt') # Instalar módulo punkt si no está ya instalado (solo ejecutar la primera vez)
-# nltk.download('wordnet') # Instalar módulo wordnet si no está ya instalado (solo ejecutar la primera vez)
-# sent_tokens = nltk.sent_tokenize(raw)# Convierte el CORPUS a una lista de sentencias
-# word_tokens = nltk.word_tokenize(raw)# Convierte el CORPUS a una lista de palabras
-# lemmer = nltk.stem.WordNetLemmatizer()
+raw=raw.lower()# convertir en minúscula
+nltk.download('punkt') # Instalar módulo punkt si no está ya instalado (solo ejecutar la primera vez)
+nltk.download('wordnet') # Instalar módulo wordnet si no está ya instalado (solo ejecutar la primera vez)
+sent_tokens = nltk.sent_tokenize(raw)# Convierte el CORPUS a una lista de sentencias
+word_tokens = nltk.word_tokenize(raw)# Convierte el CORPUS a una lista de palabras
+lemmer = nltk.stem.WordNetLemmatizer()
 
-#WordNet diccionario semántico incluido en NLTK
-# def LemTokens(tokens):
+# WordNet diccionario semántico incluido en NLTK
+def LemTokens(tokens):
     
-#     return [lemmer.lemmatize(token) for token in tokens]
+    return [lemmer.lemmatize(token) for token in tokens]
 
-# remove_punct_dict = dict((ord(punct), None) for punct in string.punctuation)
-# def LemNormalize(text):
-#     return LemTokens(nltk.word_tokenize(text.lower().translate(remove_punct_dict)))
+remove_punct_dict = dict((ord(punct), None) for punct in string.punctuation)
+def LemNormalize(text):
+    return LemTokens(nltk.word_tokenize(text.lower().translate(remove_punct_dict)))
 
     
 SALUDOS_INPUTS = ("hola", "buenas", "saludos", "qué tal", "hey","buenos dias",)
@@ -53,6 +53,7 @@ def respuesta_predefinida(user_response):
 
 #Función para determinar la similitud del texto insertado y el corpus
 def response(user_response):
-    
+    return None
+
 
 

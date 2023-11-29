@@ -17,9 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from chat import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('index', views.index),
-    path('vista2/', views.pdf),
+    path('vista2', views.pdf),
+    path('pdf', views.pdf_correcto)
 ]
+

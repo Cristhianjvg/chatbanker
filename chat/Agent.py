@@ -7,10 +7,11 @@ from langchain.vectorstores import FAISS
 from langchain.chains import ConversationalRetrievalChain
 from langchain.llms import OpenAI
 import openai
+import pickle
 
 
 class Agent:
-    def __init__(self, openai_api_key: str = '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'):
+    def __init__(self, openai_api_key: str = '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'):
         # if openai_api_key is None, then it will look the enviroment variable OPENAI_API_KEY
         self.embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
         self.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
@@ -21,14 +22,17 @@ class Agent:
         self.chain = None
         self.db = None
 
-# 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
-
     def ask(self, question: str) -> str:
         if self.chain is None:
-            response = "Please, add a document."
+            response = "Por favor, añade un documento."
         else:
             response = self.chain({"question": question, "chat_history": self.chat_history})
+            # Asegúrate de que la respuesta incluya la información del documento
+            # doc_info = response.get('document_info', 'Información del documento no disponible')
             response = response["answer"].strip()
+            # print(doc_info)
+            # # Añade la información del documento a la respuesta
+            # response += '\n\n' + doc_info
             self.chat_history.append((question, response))
         return response
 
@@ -37,14 +41,30 @@ class Agent:
         documents = loader.load()
         splitted_documents = self.text_splitter.split_documents(documents)
 
+        # Imprime el contenido de splitted_documents antes de guardar el archivo pickle
+        # print("splitted_documents:", splitted_documents)
+
         if self.db is None:
             self.db = FAISS.from_documents(splitted_documents, self.embeddings)
             self.chain = ConversationalRetrievalChain.from_llm(self.llm, self.db.as_retriever())
-            self.chat_history = []
+            if self.chat_history is None:
+                self.chat_history = []
+            else:
+                self.chat_history.extend(splitted_documents)
         else:
             self.db.add_documents(splitted_documents)
+        
+        # Guarda los documentos en el disco
+        with open('db.pkl', 'wb') as f:
+            pickle.dump(splitted_documents, f)
 
-    def forget(self) -> None:
-        self.db = None
-        self.chain = None
-        self.chat_history = None
+    def load(self) -> None:
+        """
+        Carga el historial de chat desde un archivo pickle.
+        """
+        
+        with open('db.pkl', 'rb') as f:
+            print("hola")
+            # print(pickle.load(f))
+            # self.chat_history = pickle.load(f)
+        

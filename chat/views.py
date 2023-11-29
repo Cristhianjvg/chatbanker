@@ -1,59 +1,44 @@
-from django.http import HttpResponse, JsonResponse
+# Importa las clases necesarias
 from django.shortcuts import render
+from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from .chatbot import response
-from .pdf import pdf
-from .pdf import convert_pdf_to_txt
-from django.shortcuts import render, redirect
+from django.core.files.storage import FileSystemStorage
+from .Agent import Agent  # Asegúrate de importar correctamente tu clase Agent
 
+# Inicializa la instancia de Agent fuera de los métodos
+OPENAI_API_KEY = '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'
+agent = Agent(OPENAI_API_KEY)
 
 @csrf_exempt
 def index(request):
     if request.method == 'POST':
         user_message = request.POST.get('message', '')
-        pdf_file = request.FILES.get('pdf-input', None)
-        pdf(pdf_file, 'static/chatbot.txt') 
-        bot_response = response(user_message)  # Llama a tu función con el mensaje del usuario
-
+        agent.load()
+        # Usa la instancia de agent ya inicializada
+        bot_response = agent.ask(user_message)
         return HttpResponse(bot_response)
     else:
         return render(request, "home.html")
 
-
+@csrf_exempt
 def pdf(request):
+    
+    # Si no es una solicitud POST, renderizamos la plantilla "pdf.html" con el formulario
+    # print(request.method )
+    return render(request, 'pdf.html')
+
+@csrf_exempt
+def pdf_correcto(request):
     if request.method == 'POST':
-        # Obtener archivos PDF del formulario
-        pdf_files = request.FILES.getlist('pdf_files')
-
-        # Aquí puedes procesar los archivos según tus necesidades
-        for pdf_file in pdf_files:
-            # Procesar cada archivo, por ejemplo, guardarlo en el sistema de archivos
-            st.file_uploader(
-                "Upload document",
-                type=["pdf"],
-                key="file_uploader",
-                on_change=read_and_save_file(),
-                label_visibility="collapsed",
-                accept_multiple_files=True,
-            )
-            # o realizar alguna otra operación.
-
-        # Devolver alguna respuesta JSON si es necesario
-        return JsonResponse({'message': 'Archivos PDF recibidos correctamente.'})
-
-    return render(request, "pdf.html")
-
-def read_and_save_file():
-    st.session_state["agent"].forget()  # to reset the knowledge base
-    st.session_state["messages"] = []
-    st.session_state["user_input"] = ""
-
-    for file in st.session_state["file_uploader"]:
-        with tempfile.NamedTemporaryFile(delete=False) as tf:
-            tf.write(file.getbuffer())
-            file_path = tf.name
-
-        with st.session_state["ingestion_spinner"], st.spinner(f"Ingesting {file.name}"):
-            st.session_state["agent"].ingest(file_path)
-        os.remove(file_path)
+        # Obtenemos el archivo del formulario con el nombre 'archivo'
+        uploaded_file = request.FILES['archivo']
+        # Guardamos el archivo en el directorio 'media' (asegúrate de tener esta configuración en tu settings.py)
+        fs = FileSystemStorage()
+        filename = fs.save(uploaded_file.name, uploaded_file)
+        file_url = fs.url(filename)
+        # Usa la instancia de agent ya inicializada
+        agent.ingest(fs.path(filename))  # Proporciona la ruta del archivo en el sistema de archivos
+        # Puedes hacer más cosas aquí, como procesar el archivo o devolver alguna respuesta
+        return HttpResponse(f'Archivo subido exitosamente. URL: {file_url}')
+    return render(request, 'pdf-correcto.html')
 
