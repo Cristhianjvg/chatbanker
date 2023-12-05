@@ -11,7 +11,7 @@ import pickle
 
 
 class Agent:
-    def __init__(self, openai_api_key: str = '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'):
+    def __init__(self, openai_api_key: str = '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'):
         # if openai_api_key is None, then it will look the enviroment variable OPENAI_API_KEY
         self.embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
         self.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
@@ -21,24 +21,33 @@ class Agent:
         self.chat_history = None
         self.chain = None
         self.db = None
+        self.filename = None
 
     def ask(self, question: str) -> str:
         if self.chain is None:
             response = "Por favor, añade un documento."
         else:
-            response = self.chain({"question": question, "chat_history": self.chat_history})
+            response = self.chain({"question": question, "chat_history": self.chat_history, "file_name":self.filename})
+
+            print(response)
+
             # Asegúrate de que la respuesta incluya la información del documento
-            # doc_info = response.get('document_info', 'Información del documento no disponible')
-            response = response["answer"].strip()
-            # print(doc_info)
-            # # Añade la información del documento a la respuesta
-            # response += '\n\n' + doc_info
-            self.chat_history.append((question, response))
+            # file_name = response.get('file_name', 'Nombre del archivo no disponible')
+            # response = response["answer"].strip()
+            
+            # self.chat_history.append((question, response))
+            # # print(doc_info)
+            # # # Añade la información del documento a la respuesta
+            # # response += '\n\n' + doc_info
+            # self.chat_history.append((question, response))
+            # response += '\n\n' + file_name
         return response
 
-    def ingest(self, file_path: os.PathLike) -> None:
+    def ingest(self, file_path: os.PathLike, filename: str) -> None:
         loader = PyPDFLoader(file_path)
         documents = loader.load()
+        for doc in documents:
+            doc.metadata['file_name'] = os.path.basename(filename)
         splitted_documents = self.text_splitter.split_documents(documents)
 
         # Imprime el contenido de splitted_documents antes de guardar el archivo pickle
@@ -64,7 +73,7 @@ class Agent:
         """
         
         with open('db.pkl', 'rb') as f:
-            print("hola")
+            print("")
             # print(pickle.load(f))
             # self.chat_history = pickle.load(f)
         
