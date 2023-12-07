@@ -30,13 +30,6 @@
             color: white;
             padding: 0.5em 1em;
         }
-        section {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
         footer {
             background-color: #333;
             color: white;
@@ -47,96 +40,37 @@
             width: 100%;
             z-index: 999; /* Asegura que el footer esté en el frente */
         }
-        #chat-container {
-            position: fixed;
-            bottom: 140px; /* Ajusta la distancia desde la parte inferior */
-            right: 20px;
-            display: none;
-            max-width: 250px;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-            font-family: 'Arial', sans-serif;
-            z-index: 1000; /* Asegura que el chatbot esté en el frente */
-        }
-        #toggleButton {
-            cursor: pointer;
-            position: fixed;
-            bottom: 90px; /* Ajusta la distancia desde la parte inferior */
-            right: 20px;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
+        #chat-container_dos {
+            max-width: 400px;
+            margin: 20px auto;
+            border: 1px solid #ccc;
             border-radius: 5px;
-            z-index: 1001; /* Asegura que el botón esté en el frente */
-        }
-        #chatbox {
-            height: 300px;
-            overflow-y: scroll;
-            padding: 10px;
-        }
-        #userInput {
-            width: 100%;
-            padding: 8px;
-            border: none;
-            border-top: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-        #sendButton {
-            width: 100%;
-            padding: 8px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        .message-container {
-            display: flex;
-            justify-content: flex-start;
-            margin: 10px;
-        }
-        .user-message {
-            background-color: #4CAF50;
-            color: white;
-            border-radius: 10px;
-            padding: 8px;
-            max-width: 70%;
-            word-wrap: break-word;
-        }
-        .bot-message {
-            background-color: #333;
-            border-radius: 10px;
-            padding: 8px;
-            max-width: 70%;
-            word-wrap: break-word;
+            overflow: hidden;
         }
 
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #F2F2F2;
-            color: black;
-            text-align: center;
-        }
-        #pdf-input {
-            display: none;
-        }
-        #pdf-container {
-            width: 60%;
-            margin: 20px auto;
+        #chat-messages_dos {
             padding: 10px;
-            background-color: white;
+            height: 300px;
+            overflow-y: scroll;
         }
-        #pdf-list {
-            width: 60%;
-            margin: 20px auto;
+
+        #user-input_dos {
+            display: flex;
             padding: 10px;
-            background-color: #F2F2F2;
+            background-color: #fff;
         }
-        
+
+        #message-input_dos {
+            flex-grow: 2;
+            padding: 5px;
+            margin-right: 5px;
+        }
+
+        #send-button_dos {
+            padding: 5px;
+            cursor: pointer;
+        }
+            
     </style>
 </head>
 <body>
@@ -146,18 +80,40 @@
     
     <nav>
         <a href="/index">Inicio</a>
-    </nav>
-
-    <section id="pdf">
-        <h2>Subir PDF y Visualizar</h2>
-        <form action="/pdf" method="POST" enctype="multipart/form-data">
-            <input type="file" name="archivo">
-            <input type="submit"> 
-        </form>
-    </section>      
-
+    </nav>    
+    <div id="chat-container_dos">
+        <div id="chat-messages_dos"></div>
+        <div id="user-input_dos">
+          <input type="text" id="message-input_dos" placeholder="Escribe un mensaje...">
+          <button id="send-button_dos" onclick="sendMessage()">Enviar</button>
+        </div>
+      </div>
+      
+      <script>
+        function sendMessage() {
+          var userInput = document.getElementById("message-input_dos").value;
+          var chatMessages = document.getElementById("chat-messages_dos");
+      
+          // Agregar el mensaje del usuario al contenedor del chat
+          chatMessages.innerHTML += "<p><strong>Tú:</strong> " + userInput + "</p>";
+      
+          // Lógica del chatbot (aquí es donde debes implementar la lógica real del chatbot)
+          // En este ejemplo, simplemente responde con un mensaje fijo
+          var botResponse = "Hola, soy un chatbot. ¡Gracias por tu mensaje!";
+      
+          // Agregar la respuesta del chatbot al contenedor del chat
+          chatMessages.innerHTML += "<p><strong>Chatbot:</strong> " + botResponse + "</p>";
+      
+          // Limpiar el campo de entrada del usuario
+          document.getElementById("message-input_dos").value = "";
+      
+          // Hacer scroll hacia abajo para mostrar el mensaje más reciente
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+      </script>
     <footer>
         <p>&copy; 2023 BANCO DEL HORIZONTE FINANCIERO</p>
     </footer>
 </body>
 </html>
+
