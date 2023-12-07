@@ -28,6 +28,10 @@ def pdf(request):
     return render(request, 'pdf.html')
 
 @csrf_exempt
+def chat_general(request):
+    return render(request, 'chatgeneral.html')
+
+@csrf_exempt
 def pdf_correcto(request):
     if request.method == 'POST':
         # Obtenemos el archivo del formulario con el nombre 'archivo'
