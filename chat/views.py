@@ -7,7 +7,7 @@ from django.core.files.storage import FileSystemStorage
 from .Agent import Agent  # Asegúrate de importar correctamente tu clase Agent
 
 # Inicializa la instancia de Agent fuera de los métodos
-OPENAI_API_KEY = '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'
+OPENAI_API_KEY = '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'
 agent = Agent(OPENAI_API_KEY)
 
 @csrf_exempt

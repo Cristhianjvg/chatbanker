@@ -11,7 +11,7 @@ import pickle
 
 
 class Agent:
-    def __init__(self, openai_api_key: str = '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'):
+    def __init__(self, openai_api_key: str = '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'):
         # if openai_api_key is None, then it will look the enviroment variable OPENAI_API_KEY
         self.embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
         self.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
