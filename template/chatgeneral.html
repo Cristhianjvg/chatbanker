@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BANCO DE LOJA</title>
+    <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+            color: #333;
+        }
+        header {
+            background-color: #76BC21;
+            color: white;
+            text-align: center;
+            padding: 1em;
+        }
+        nav {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 0.5em;
+        }
+        nav a {
+            text-decoration: none;
+            color: white;
+            padding: 0.5em 1em;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 0.2em;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: 999; /* Asegura que el footer esté en el frente */
+        }
+        #chat-container_dos {
+            max-width: 400px;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        #chat-messages_dos {
+            padding: 10px;
+            height: 300px;
+            overflow-y: scroll;
+        }
+
+        #user-input_dos {
+            display: flex;
+            padding: 10px;
+            background-color: #fff;
+        }
+
+        #message-input_dos {
+            flex-grow: 2;
+            padding: 5px;
+            margin-right: 5px;
+        }
+
+        #send-button_dos {
+            padding: 5px;
+            cursor: pointer;
+        }
+            
+    </style>
+</head>
+<body>
+    <header>
+        <h1>BANCO DEL HORIZONTE FINANCIERO</h1>
+    </header>
+    
+    <nav>
+        <a href="/index">Inicio</a>
+    </nav>    
+    <div id="chat-container_dos">
+        <div id="chat-messages_dos"></div>
+        <div id="user-input_dos">
+          <input type="text" id="message-input_dos" placeholder="Escribe un mensaje...">
+          <button id="send-button_dos" onclick="sendMessage()">Enviar</button>
+        </div>
+      </div>
+      
+      <script>
+        function sendMessage() {
+          var userInput = document.getElementById("message-input_dos").value;
+          var chatMessages = document.getElementById("chat-messages_dos");
+      
+          // Agregar el mensaje del usuario al contenedor del chat
+          chatMessages.innerHTML += "<p><strong>Tú:</strong> " + userInput + "</p>";
+      
+          // Lógica del chatbot (aquí es donde debes implementar la lógica real del chatbot)
+          // En este ejemplo, simplemente responde con un mensaje fijo
+          var botResponse = "Hola, soy un chatbot. ¡Gracias por tu mensaje!";
+      
+          // Agregar la respuesta del chatbot al contenedor del chat
+          chatMessages.innerHTML += "<p><strong>Chatbot:</strong> " + botResponse + "</p>";
+      
+          // Limpiar el campo de entrada del usuario
+          document.getElementById("message-input_dos").value = "";
+      
+          // Hacer scroll hacia abajo para mostrar el mensaje más reciente
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+      </script>
+    <footer>
+        <p>&copy; 2023 BANCO DEL HORIZONTE FINANCIERO</p>
+    </footer>
+</body>
+</html>
+

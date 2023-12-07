@@ -92,6 +92,12 @@
             border: none;
             cursor: pointer;
         }
+
+        #sendButton a {
+            text-decoration: none;
+            color: white;
+        }
+
         .message-container {
             display: flex;
             justify-content: flex-start;
@@ -202,6 +208,7 @@
             <div id="chatbox"></div>
             <input id="userInput" type="text" placeholder="Escribe un mensaje...">
             <button id="sendButton" onclick="sendMessage()">Enviar</button>
+            <button id="sendButton"><a href="chatgeneral"> Chat General</a></button>
         </div>
     
         <script>
