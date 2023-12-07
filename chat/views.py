@@ -35,17 +35,24 @@ def chat_general(request):
 @csrf_exempt
 def pdf_correcto(request):
     if request.method == 'POST':
-        # Obtenemos el archivo del formulario con el nombre 'archivo'
-        uploaded_file = request.FILES['archivo']
-        # Guardamos el archivo en el directorio 'media' (asegúrate de tener esta configuración en tu settings.py)
+        # Obtenemos los archivos del formulario con el nombre 'archivos[]'
+        uploaded_files = request.FILES.getlist('archivos[]')
+        file_urls = []
+
+        # Guardamos cada archivo en el directorio 'media'
         fs = FileSystemStorage()
-        
-        filename = fs.save(uploaded_file.name, uploaded_file)
-        file_name_without_extension, extension = os.path.splitext(filename)
-        file_url = fs.url(filename)
-        # Usa la instancia de agent ya inicializada
-        agent.ingest(fs.path(filename), file_name_without_extension)  # Proporciona la ruta del archivo en el sistema de archivos
-        # Puedes hacer más cosas aquí, como procesar el archivo o devolver alguna respuesta
-        return HttpResponse(f'Archivo subido exitosamente. URL: {file_url}')
-    return render(request, 'pdf-correcto.html-')
+
+        for uploaded_file in uploaded_files:
+            filename = fs.save(uploaded_file.name, uploaded_file)
+            file_name_without_extension, _ = os.path.splitext(filename)
+            file_url = fs.url(filename)
+            file_urls.append(file_url)
+
+            # Usa la instancia de agent ya inicializada
+            agent.ingest(fs.path(filename), file_name_without_extension)  # Proporciona la ruta del archivo en el sistema de archivos
+
+        # Puedes hacer más cosas aquí, como procesar los archivos o devolver alguna respuesta
+        return HttpResponse(f'Archivos subidos exitosamente. URLs: {", ".join(file_urls)}')
+
+    return render(request, 'pdf-correcto.html')
 
