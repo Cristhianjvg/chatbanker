@@ -1,6 +1,9 @@
 import os
+from docx import Document
 from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.memory import VectorStoreRetrieverMemory
 from langchain.document_loaders import PyPDFLoader
+from langchain.vectorstores import Qdrant
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import FAISS
 
@@ -8,10 +11,10 @@ from langchain.chains import ConversationalRetrievalChain
 from langchain.llms import OpenAI
 import openai
 import pickle
-
+from langchain_core.documents.base import Document as Doc
 
 class Agent:
-    def __init__(self, openai_api_key: str = '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'):
+    def __init__(self, openai_api_key: str = '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'):
         # if openai_api_key is None, then it will look the enviroment variable OPENAI_API_KEY
         self.embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
         self.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
@@ -20,23 +23,62 @@ class Agent:
         self.chain = None
         self.db = None
         self.filename = None
+        self.metadata = None
+        # self.memory = VectorStoreRetrieverMemory(retriever=self.embeddings, memory_key="chat_history", return_docs=False, return_messages=True)
 
     def ask(self, question: str) -> str:
+        # Inicializa la respuesta con un mensaje por defecto
         if self.chain is None:
             response = "Por favor, añade un documento."
         else:
-            response = self.chain({"question": question, "chat_history": self.chat_history, "file_name":self.filename})
+            # Intenta obtener una respuesta de la cadena
+            try:
 
-            # Asegúrate de que la respuesta incluya la información del documento
-            file_name = response.get('file_name', 'Nombre del archivo no disponible')
-            response = response["answer"].strip()
-            
-            self.chat_history.append((question, response))
-            # print(doc_info)
-            # # Añade la información del documento a la respuesta
-            # response += '\n\n' + doc_info
-            self.chat_history.append((question, response))
-            response += '\n\n' + file_name
+                chat_history_tuples = []
+                file_name = ''
+                metadata = []
+
+                response = self.chain({"question": question, "chat_history": chat_history_tuples, "metadata": metadata})
+                
+                self.chat_history.append((question, response))
+                # print(type(response))
+                source_documents = response.get('source_documents', [])
+                # print(type(source_documents))
+                response = response["answer"].strip()
+
+                # Busca el documento de origen en los documentos fuente
+                for doc in source_documents:
+                    print(type(doc))
+                    # doc = tuple
+                    if isinstance(doc, Doc):
+                        metadata = doc.metadata
+                        if 'file_name' in metadata:
+                            file_name = metadata['file_name']
+                            file_name = ' (' + file_name + '.pdf)'
+                # for item in self.chat_history:
+                #     if isinstance(item, Doc) and response in item.page_content:
+                #         metadata = item.metadata
+                #         if 'file_name' in metadata:
+                #             file_name = metadata['file_name']
+                #             print("File name: " + file_name)
+                response += '\n\n' + file_name
+
+
+
+                # for item in self.chat_history:
+                #     if isinstance(item, Doc):
+                #         metadata = item.metadata
+                #         if 'file_name' in metadata:
+                #             file_name = metadata['file_name']
+                #             print("File name: " + file_name)
+                #             response = item.page_content
+                # response += '\n\n' + file_name
+                # print("Response: " + response)
+            except Exception as e:
+                # Si algo va mal, actualiza la respuesta con un mensaje de error
+                print(e)
+                response = f"Se produjo un error al procesar la pregunta:  {str(e)}"
+
         return response
 
     def ingest(self, file_path: os.PathLike, filename: str) -> None:
@@ -51,7 +93,7 @@ class Agent:
 
         if self.db is None:
             self.db = FAISS.from_documents(splitted_documents, self.embeddings)
-            self.chain = ConversationalRetrievalChain.from_llm(self.llm, self.db.as_retriever())
+            self.chain = ConversationalRetrievalChain.from_llm(self.llm, self.db.as_retriever(), return_source_documents=True,)
             if self.chat_history is None:
                 self.chat_history = []
             else:

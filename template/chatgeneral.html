@@ -96,13 +96,28 @@
       
           // Agregar el mensaje del usuario al contenedor del chat
           chatMessages.innerHTML += "<p><strong>Tú:</strong> " + userInput + "</p>";
+
+          fetch('/chatgeneral', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        // 'X-CSRFToken': getCookie('csrftoken')  // Asegúrate de tener una función para obtener la cookie CSRF
+                    },
+                    body: 'message=' + encodeURIComponent(userInput)
+                })
+                .then(response => response.text())
+                .then(botMessage => {
+                    var chatMessages2 = "<p><strong>Chatbot:</strong> " + botMessage + "</p>";
+                    chatMessages.innerHTML += chatMessages2;
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                });
       
           // Lógica del chatbot (aquí es donde debes implementar la lógica real del chatbot)
           // En este ejemplo, simplemente responde con un mensaje fijo
           var botResponse = "Hola, soy un chatbot. ¡Gracias por tu mensaje!";
       
           // Agregar la respuesta del chatbot al contenedor del chat
-          chatMessages.innerHTML += "<p><strong>Chatbot:</strong> " + botResponse + "</p>";
+        //   chatMessages.innerHTML += "<p><strong>Chatbot:</strong> " + botResponse + "</p>";
       
           // Limpiar el campo de entrada del usuario
           document.getElementById("message-input_dos").value = "";

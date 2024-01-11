@@ -7,7 +7,7 @@ from django.core.files.storage import FileSystemStorage
 from .Agent import Agent  # Asegúrate de importar correctamente tu clase Agent
 
 # Inicializa la instancia de Agent fuera de los métodos
-OPENAI_API_KEY = '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'
+OPENAI_API_KEY = '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'
 agent = Agent(OPENAI_API_KEY)
 
 @csrf_exempt
@@ -30,7 +30,15 @@ def pdf(request):
 
 @csrf_exempt
 def chat_general(request):
-    return render(request, 'chatgeneral.html')
+    if request.method == 'POST':
+        user_message = request.POST.get('message', '')
+        agent.load()
+        # Usa la instancia de agent ya inicializada
+        bot_response = agent.ask(user_message)
+        return HttpResponse(bot_response)
+    else:
+        return render(request, 'chatgeneral.html')
+    
 
 @csrf_exempt
 def pdf_correcto(request):
