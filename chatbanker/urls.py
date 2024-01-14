@@ -25,6 +25,8 @@ urlpatterns = [
     path('index', views.index),
     path('vista2', views.pdf),
     path('pdf', views.pdf_correcto),
-    path('chatgeneral', views.chat_general)
+    path('chatgeneral', views.chat_general),
+    path('principal', views.principal),
+    path('chatprincipal', views.chatprincipal)
 ]
 

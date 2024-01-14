@@ -1,5 +1,5 @@
 import os
-from docx import Document
+#from docx import Document
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.memory import VectorStoreRetrieverMemory
 from langchain.document_loaders import PyPDFLoader

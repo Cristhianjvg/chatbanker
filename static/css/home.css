@@ -1,0 +1,199 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+    color: #333;
+}
+
+
+/* Boton de enviar */
+#sendButton {
+    padding: 10px;
+    background-color: #5978F3;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#sendButton a {
+    text-decoration: none;
+    color: white;
+}
+
+button span {
+    position: relative;
+    z-index: 10;
+    transition: color 0.4s;
+}
+/* caja del chatbot */
+.chatbot{
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    border: 5px solid #dcdada;
+}
+
+/* caja del pdf */
+.pdfsec{
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    max-width: 350px;
+    backdrop-filter: blur(5px);
+    
+}
+
+button:hover span {
+    color: black;
+}
+
+.background-image {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    filter: blur(2px);
+}
+
+h1 {
+    margin-top: 0;
+    /* Ajuste del margen superior para evitar espacio adicional */
+}
+
+h2 {
+    color: #fff;
+}
+
+nav {
+    background-color: #333;
+    color: white;
+    text-align: right;
+    padding: 0.5em;
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+    padding: 0.5em 1em;
+
+}
+
+section {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 0.2em;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 999;
+    /* Asegura que el footer esté en el frente */
+}
+
+#chat-container {
+    position: fixed;
+    bottom: 140px;
+    /* Ajusta la distancia desde la parte inferior */
+    right: 20px;
+    display: none;
+    max-width: 250px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    font-family: 'Arial', sans-serif;
+    z-index: 1000;
+    /* Asegura que el chatbot esté en el frente */
+}
+
+#toggleButton {
+    cursor: pointer;
+    position: fixed;
+    bottom: 90px;
+    /* Ajusta la distancia desde la parte inferior */
+    right: 20px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    z-index: 1001;
+    /* Asegura que el botón esté en el frente */
+}
+
+#chatbox {
+    height: 300px;
+    overflow-y: scroll;
+    padding: 10px;
+}
+
+#userInput {
+    width: 50%;
+    padding: 2%;
+    border: none;
+    border-top: 1px solid #ccc;
+    box-sizing: border-box;
+}
+/* mensaje del usuario */
+.message-container {
+    display: flex;
+    justify-content: flex-start;
+    margin: 10px;
+}
+
+.user-message {
+    background-color: #ccc;
+    color: #333;
+    border-radius: 10px;
+    padding: 8px;
+    max-width: 70%;
+    word-wrap: break-word;
+}
+
+/* Color del mensaje del chat */
+
+.bot-message {
+    background-color: #5978F3;
+    border-radius: 10px;
+    padding: 8px;
+    max-width: 70%;
+    word-wrap: break-word;
+    color: #fff;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #F2F2F2;
+    color: black;
+    text-align: center;
+}
+
+#pdf-input {
+    display: none;
+}
+
+#pdf-container {
+    width: 60%;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: white;
+}
+
+#pdf-list {
+    width: 60%;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #F2F2F2;
+}
