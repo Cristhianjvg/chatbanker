@@ -64,3 +64,24 @@ def pdf_correcto(request):
 
     return render(request, 'pdf-correcto.html')
 
+@csrf_exempt
+def principal(request):
+    if request.method == 'POST':
+        user_message = request.POST.get('message', '')
+        agent.load()
+        # Usa la instancia de agent ya inicializada
+        bot_response = agent.ask(user_message)
+        return HttpResponse(bot_response)
+    else:
+        return render(request, "principal.html")
+    
+@csrf_exempt
+def chatprincipal(request):
+    if request.method == 'POST':
+        user_message = request.POST.get('message', '')
+        agent.load()
+        # Usa la instancia de agent ya inicializada
+        bot_response = agent.ask(user_message)
+        return HttpResponse(bot_response)
+    else:
+        return render(request, "chatprincipal.html")

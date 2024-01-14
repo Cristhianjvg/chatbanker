@@ -1,267 +1,84 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+    <link type='text/css' href='{% static "css/home.css" %}' rel='stylesheet' />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BANCO </title>
+    <title>CHATBANKER </title>
     <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f8f8;
-            color: #333;
-        }
-        header {
-            background-color: #76BC21;
-            color: white;
-            text-align: center;
-            padding: 1em;
-        }
-        nav {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 0.5em;
-        }
-        nav a {
-            text-decoration: none;
-            color: white;
-            padding: 0.5em 1em;
-        }
-        section {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 0.2em;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            z-index: 999; /* Asegura que el footer esté en el frente */
-        }
-        #chat-container {
-            position: fixed;
-            bottom: 140px; /* Ajusta la distancia desde la parte inferior */
-            right: 20px;
-            display: none;
-            max-width: 250px;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-            font-family: 'Arial', sans-serif;
-            z-index: 1000; /* Asegura que el chatbot esté en el frente */
-        }
-        #toggleButton {
-            cursor: pointer;
-            position: fixed;
-            bottom: 90px; /* Ajusta la distancia desde la parte inferior */
-            right: 20px;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            z-index: 1001; /* Asegura que el botón esté en el frente */
-        }
-        #chatbox {
-            height: 300px;
-            overflow-y: scroll;
-            padding: 10px;
-        }
-        #userInput {
-            width: 100%;
-            padding: 8px;
-            border: none;
-            border-top: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-        #sendButton {
-            width: 100%;
-            padding: 8px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        #sendButton a {
-            text-decoration: none;
-            color: white;
-        }
-
-        .message-container {
-            display: flex;
-            justify-content: flex-start;
-            margin: 10px;
-        }
-        .user-message {
-            background-color: #4CAF50;
-            color: white;
-            border-radius: 10px;
-            padding: 8px;
-            max-width: 70%;
-            word-wrap: break-word;
-        }
-        .bot-message {
-            background-color: #333;
-            border-radius: 10px;
-            padding: 8px;
-            max-width: 70%;
-            word-wrap: break-word;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #F2F2F2;
-            color: black;
-            text-align: center;
-        }
-        #pdf-input {
-            display: none;
-        }
-        #pdf-container {
-            width: 60%;
-            margin: 20px auto;
-            padding: 10px;
-            background-color: white;
-        }
-        #pdf-list {
-            width: 60%;
-            margin: 20px auto;
-            padding: 10px;
-            background-color: #F2F2F2;
-        }
-        
-    </style>
 </head>
+
 <body>
-    <header>
-        <h1>BANCO DEL HORIZONTE FINANCIERO</h1>
-    </header>
-    
-    <nav>
-        <a href="#inicio">Inicio</a>
-        <a href="#servicios">Servicios</a>
-        <a href="#galeria">Galería</a>
-        <a href="#contacto">Contacto</a>
-        <a href="vista2">SubirPDF</a>
-    </nav>
-
-    <section id="inicio">
-        <h2>¡Bienvenido a Nuestra Página!</h2>
-        <p>Descubre todo lo que ofrecemos.</p>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYwvG_PVNBmQJLVkDiAKgFAuRDS0wAo2exDQ&usqp=CAU"alt="Imagen de muestra">
-    </section>
-
-    <section id="servicios">
-        <h2>Nuestros Servicios</h2>
-        <ul>
-            <li>Servicio 1</li>
-            <li>Servicio 2</li>
-            <li>Servicio 3</li>
-        </ul>
-    </section>
-
-    <section id="galeria">
-        <h2>Galería</h2>
-        <div class="galeria-imagen">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYwvG_PVNBmQJLVkDiAKgFAuRDS0wAo2exDQ&usqp=CAU" alt="Imagen 1">
-            <p>Descripción de la imagen 1</p>
-        </div>
-        <div class="galeria-imagen">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYwvG_PVNBmQJLVkDiAKgFAuRDS0wAo2exDQ&usqp=CAU" alt="Imagen 2">
-            <p>Descripción de la imagen 2</p>
-        </div>
-    </section>
-    
-    <section id="contacto">
-        <h2>Contacto</h2>
-        <form>
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre" required><br>
-
-            <label for="email">Correo Electrónico:</label>
-            <input type="email" id="email" name="email" required><br>
-
-            <label for="mensaje">Mensaje:</label><br>
-            <textarea id="mensaje" name="mensaje" rows="4" required></textarea><br>
-
-            <input type="submit" value="Enviar">
+    <img class="background-image" src='{% static "imagenes/imagen4.jpg" %}' alt="Imagen de fondo">
+    <section id="pdf-section" class="pdfsec">
+        <h2>Subir PDF y Visualizar</h2>
+        <form action="/pdf" method="POST" enctype="multipart/form-data">
+            <input type="file" name="archivos[]" multiple>
+            <button type="submit">Subir</button>
         </form>
-    </section>  
+    </section>
 
-    <footer>
-        <div id="toggleButton" onclick="toggleChat()">Ralp</div>
-
-        <div id="chat-container">
+    <section id="chat-section" class="chatbot">
+        <div id="chat-container" style="display: contents;">
             <div id="chatbox"></div>
-            <input id="userInput" type="text" placeholder="Escribe un mensaje...">
-            <button id="sendButton" onclick="sendMessage()">Enviar</button>
-            <button id="sendButton"><a href="chatgeneral"> Chat General</a></button>
+            <div id="userInput-container">
+                <input id="userInput" type="text" placeholder="Escribe un mensaje...">
+                <button id="sendButton" onclick="sendMessage()"> <span>Enviar</span>
+                </button>
+            </div>
         </div>
-    
-        <script>
-            function toggleChat() {
-                var chatContainer = document.getElementById('chat-container');
-                chatContainer.style.display = (chatContainer.style.display === 'none' || chatContainer.style.display === '') ? 'block' : 'none';
+    </section>
 
-                // Si el chat se está mostrando, agrega un mensaje de bienvenida del chatbot
-                if (chatContainer.style.display === 'block') {
-                    addBotMessage("Hola, soy tu chatbot personal");
-                }
+    <script>
+        window.onload = function () {
+            // Agrega un mensaje de bienvenida del chatbot
+            addBotMessage("Hola, soy tu chatbot personal");
+        }
+
+        function addBotMessage(message) {
+            const chatbox = document.getElementById('chatbox');
+            const botMessage = '<div class="message-container" ><div class="bot-message">' + message + '</div></div>';
+            chatbox.innerHTML += botMessage;
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const userInput = document.getElementById('userInput');
+            const message = userInput.value;
+
+            if (message.trim() === "") {
+                return;
             }
 
-            function addBotMessage(message) {
-                var chatbox = document.getElementById('chatbox');
-                var botMessage = '<div class="message-container" ><div class="bot-message">' + message + '</div></div>';
-                chatbox.innerHTML += botMessage;
-                chatbox.scrollTop = chatbox.scrollHeight;
-            }
-        
-            function sendMessage() {
-                var userInput = document.getElementById('userInput');
-                var message = userInput.value;
-        
-                if (message.trim() === "") {
-                    return;
-                }
-        
-                var chatbox = document.getElementById('chatbox');
-                var userMessage = '<div class="message-container"><div class="user-message">' + message + '</div></div>';
-                chatbox.innerHTML += userMessage;
-        
-                // Enviar el mensaje del usuario al servidor y recibir la respuesta
-                fetch('/index', {
+            const chatbox = document.getElementById('chatbox');
+            const userMessage = '<div class="message-container"><div class="user-message">' + message + '</div></div>';
+            chatbox.innerHTML += userMessage;
+
+            try {
+                const response = await fetch('/index', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                         // 'X-CSRFToken': getCookie('csrftoken')  // Asegúrate de tener una función para obtener la cookie CSRF
                     },
                     body: 'message=' + encodeURIComponent(message)
-                })
-                .then(response => response.text())
-                .then(botMessage => {
-                    var botMessageDiv = '<div class="message-container"><div class="bot-message">' + botMessage + '</div></div>';
-                    chatbox.innerHTML += botMessageDiv;
-                    chatbox.scrollTop = chatbox.scrollHeight;
                 });
-        
-                userInput.value = "";
+
+                const botMessage = await response.text();
+                const botMessageDiv = '<div class="message-container"><div class="bot-message">' + botMessage + '</div></div>';
+                chatbox.innerHTML += botMessageDiv;
+                chatbox.scrollTop = chatbox.scrollHeight;
+            } catch (error) {
+                console.error('Error al enviar mensaje:', error);
             }
-        </script>
-        
-        <p>&copy; 2023 BANCO DEL HORIZONTE FINANCIERO</p>
-    </footer>
+
+            userInput.value = "";
+        }
+    </script>
+
+
 </body>
+
 </html>
