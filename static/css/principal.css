@@ -17,6 +17,10 @@ body {
     z-index: -1; 
 }
 
+a:-webkit-any-link:active {
+  color: white;
+}
+
 .voltage-button {
     position: relative;
   }

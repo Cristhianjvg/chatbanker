@@ -14,7 +14,7 @@ import pickle
 from langchain_core.documents.base import Document as Doc
 
 class Agent:
-    def __init__(self, openai_api_key: str = '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'):
+    def __init__(self, openai_api_key: str = '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'):
         # if openai_api_key is None, then it will look the enviroment variable OPENAI_API_KEY
         self.embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
         self.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
@@ -37,8 +37,9 @@ class Agent:
                 chat_history_tuples = []
                 file_name = ''
                 metadata = []
+                model = 'gpt-3.5-turbo'
 
-                response = self.chain({"question": question, "chat_history": chat_history_tuples, "metadata": metadata})
+                response = self.chain({"question": question, "model":model, "chat_history": chat_history_tuples, "metadata": metadata})
                 
                 self.chat_history.append((question, response))
                 # print(type(response))

@@ -6,35 +6,61 @@
     <link type='text/css' href='{% static "css/home.css" %}' rel='stylesheet' />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHATBANKER </title>
+    <title>RALP </title>
     <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+    <link rel="icon" href='{% static "imagenes/Ralp.png" %}' type="image/png">
+
 </head>
 
 <body>
+    
     <img class="background-image" src='{% static "imagenes/imagen4.jpg" %}' alt="Imagen de fondo">
     <section id="pdf-section" class="pdfsec">
+        <img src='{% static "imagenes/Ralp.png" %}' alt="" width="150px" style="padding: -20px; margin: -30px;">
         <h2>Subir PDF y Visualizar</h2>
-        <form action="/pdf" method="POST" enctype="multipart/form-data">
-            <input type="file" name="archivos[]" multiple>
-            <button type="submit">Subir</button>
+        <form id="pdf-form" action="/pdf" method="POST" enctype="multipart/form-data">
+            <input type="file" name="archivos[]" multiple >
+            <!-- <button  >Cargar archivo</button> -->
+            <button type="submit" id="cargarArchivo" class="button1" style="margin-top: 10px;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 3H12H8C6.34315 3 5 4.34315 5 6V18C5 19.6569 6.34315 21 8 21H11M13.5 3L19 8.625M13.5 3V7.625C13.5 8.17728 13.9477 8.625 14.5 8.625H19M19 8.625V11.8125" stroke="#fffffff" stroke-width="2"></path>
+              <path d="M17 15V18M17 21V18M17 18H14M17 18H20" stroke="#fffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+              CARGAR ARCHIVO 
+              </button>
+            <div id="preloader" style="display: none;">
+                <img src='{% static "imagenes/cargando.gif" %}' width="120px" style="padding: -10px;" alt="Cargando...">
+            </div>            
+            <!-- <button >Cargar archivo</button> -->
         </form>
     </section>
-
+    
     <section id="chat-section" class="chatbot">
         <div id="chat-container" style="display: contents;">
             <div id="chatbox"></div>
-            <div id="userInput-container">
+            <div id="userInput-container" style="position: relative;">
                 <input id="userInput" type="text" placeholder="Escribe un mensaje...">
-                <button id="sendButton" onclick="sendMessage()"> <span>Enviar</span>
-                </button>
+                <button id="sendButton" onclick="sendMessage()"> <span>Enviar</span></button>
+                <div id="preloader2" style="display: none; position: absolute; top: 50%; right: 10px; transform: translateY(-50%);">
+                    <img src='{% static "imagenes/cargando.gif" %}' width="200px" alt="Cargando...">
+                </div>
             </div>
         </div>
     </section>
 
+    <!-- Ventan Modal -->
+<!-- 
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Archivo subido exitosamente.</p>
+        </div>
+    </div> -->
+
     <script>
         window.onload = function () {
             // Agrega un mensaje de bienvenida del chatbot
-            addBotMessage("Hola, soy tu chatbot personal");
+            addBotMessage("Hola, soy tu chatbot personal Ralph");
         }
 
         function addBotMessage(message) {
@@ -44,6 +70,26 @@
             chatbox.scrollTop = chatbox.scrollHeight;
         }
 
+        function archivoCargado() {
+            alert("Archivo cargado con éxito.");
+        }
+
+        // function sendMessage() {
+        //     document.getElementById('preloader2').style.display = 'block';
+        //     var userInput = document.getElementById("userInput");
+        //     var userMessage = userInput.value;
+        //     userInput.value = "";
+        //     if (message.trim() === "") {
+        //         return;
+        //     }
+        //     var chatbox = document.getElementById("chatbox");
+        //     chatbox.innerHTML += '<div class="message-container"><div class="user-message">' + userMessage + '</div></div>';
+
+        //     obtenerRespuesta(userMessage, function(response) {
+        //         addBotMessage(response);
+        //         document.getElementById('preloader2').style.display = 'none';
+        //     });
+        // }
         async function sendMessage() {
             const userInput = document.getElementById('userInput');
             const message = userInput.value;
@@ -76,6 +122,24 @@
 
             userInput.value = "";
         }
+
+
+        function addMessage(sender, message) {
+            // Función para agregar mensajes al chatbox
+            $("#chatbox").append("<p><strong>" + sender + ":</strong> " + message + "</p>");
+        }
+
+
+        // Preloader de cargar Archivo
+        document.getElementById('cargarArchivo').addEventListener('click', function() {
+            // Muestra el preloader
+            document.getElementById('preloader').style.display = 'block';
+
+            // Oculta el preloader después de 2 segundos
+            setTimeout(function() {
+                document.getElementById('preloader').style.display = 'none';
+            }, 7000);
+        });
     </script>
 
 

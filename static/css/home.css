@@ -197,3 +197,85 @@ body {
     padding: 10px;
     background-color: #F2F2F2;
 }
+
+.button1 {
+    border: none;
+    display: flex;
+    padding: 0.5rem 1.2rem;
+    background-color: #488aec;
+    color: hsl(0, 0%, 100%);
+    font-size: 0.65rem;
+    line-height: 0.9rem;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    vertical-align: middle;
+    align-items: center;
+    border-radius: 0.5rem;
+    user-select: none;
+    gap: 0.75rem;
+    box-shadow: 0 4px 6px -1px #488aec31, 0 2px 4px -1px #488aec17;
+    transition: all .6s ease;
+    margin-left: 80px;
+  }
+  
+  .button1:hover {
+    box-shadow: 0 10px 15px -3px #488aec4f, 0 4px 6px -2px #488aec17;
+  }
+  
+  .button1:focus,.button1:active {
+    opacity: .85;
+    box-shadow: none;
+  }
+  
+  .button1 svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+
+  .custum-file-upload {
+    height: 100px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: space-between;
+    gap: 20px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #cacaca;
+    background-color: rgba(255, 255, 255, 1);
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0px 48px 35px -48px rgba(0,0,0,0.1);
+    margin-left: 50px;
+    margin-bottom: 5px;
+  }
+  
+  .custum-file-upload .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .custum-file-upload .icon svg {
+    height: 80px;
+    fill: rgba(75, 85, 99, 1);
+  }
+  
+  .custum-file-upload .text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .custum-file-upload .text span {
+    font-weight: 400;
+    color: rgba(75, 85, 99, 1);
+  }
+  
+  .custum-file-upload input {
+    display: none;
+  }
+  
