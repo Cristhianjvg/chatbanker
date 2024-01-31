@@ -10,7 +10,7 @@ from .Agent import Agent  # Asegúrate de importar correctamente tu clase Agent
 from pathlib import PurePath
 
 # Inicializa la instancia de Agent fuera de los métodos
-OPENAI_API_KEY = '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'
+OPENAI_API_KEY = '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'
 agent = Agent(OPENAI_API_KEY)
 
 @csrf_exempt

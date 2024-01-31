@@ -2,7 +2,7 @@ import os
 #from docx import Document
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.memory import VectorStoreRetrieverMemory
-from langchain.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import PyPDFLoader
 from langchain.vectorstores import Qdrant
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import FAISS
@@ -14,7 +14,7 @@ import pickle
 from langchain_core.documents.base import Document as Doc
 
 class Agent:
-    def __init__(self, openai_api_key: str = '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'):
+    def __init__(self, openai_api_key: str = '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'):
         # if openai_api_key is None, then it will look the enviroment variable OPENAI_API_KEY
         self.embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
         self.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
@@ -38,9 +38,10 @@ class Agent:
                 file_name = ''
                 metadata = []
                 model = 'gpt-3.5-turbo'
-
                 response = self.chain({"question": question, "model":model, "chat_history": chat_history_tuples, "metadata": metadata})
                 
+                print("segundo sel.chain")
+                print(self.chain)
                 self.chat_history.append((question, response))
                 # print(type(response))
                 source_documents = response.get('source_documents', [])
@@ -56,30 +57,11 @@ class Agent:
                         if 'file_name' in metadata:
                             file_name = metadata['file_name']
                             file_name = ' (' + file_name + '.pdf)'
-                # for item in self.chat_history:
-                #     if isinstance(item, Doc) and response in item.page_content:
-                #         metadata = item.metadata
-                #         if 'file_name' in metadata:
-                #             file_name = metadata['file_name']
-                #             print("File name: " + file_name)
                 response += '\n\n' + file_name
-
-
-
-                # for item in self.chat_history:
-                #     if isinstance(item, Doc):
-                #         metadata = item.metadata
-                #         if 'file_name' in metadata:
-                #             file_name = metadata['file_name']
-                #             print("File name: " + file_name)
-                #             response = item.page_content
-                # response += '\n\n' + file_name
-                # print("Response: " + response)
             except Exception as e:
                 # Si algo va mal, actualiza la respuesta con un mensaje de error
                 print(e)
                 response = f"Se produjo un error al procesar la pregunta:  {str(e)}"
-
         return response
 
     def ingest(self, file_path: os.PathLike, filename: str) -> None:
@@ -106,13 +88,19 @@ class Agent:
         with open('db.pkl', 'wb') as f:
             pickle.dump(splitted_documents, f)
 
+
     def load(self) -> None:
         """
         Carga el historial de chat desde un archivo pickle.
         """
-        
         with open('db.pkl', 'rb') as f:
-            # print("")
-            # print(pickle.load(f))
-            self.chat_history = pickle.load(f)
-            
+            try:
+                self.chat_history = pickle.load(f)
+                if self.chain is None and self.chat_history:
+                    self.db = FAISS.from_documents(self.chat_history, self.embeddings)
+                    self.chain = ConversationalRetrievalChain.from_llm(self.llm, self.db.as_retriever(), return_source_documents=True,)
+                    print("primer sel.chains")
+                    print(self.chain)
+            except EOFError:
+                print("El archivo está vacío.")
+                self.chat_history = []
