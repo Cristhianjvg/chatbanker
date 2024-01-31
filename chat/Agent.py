@@ -14,7 +14,7 @@ import pickle
 from langchain_core.documents.base import Document as Doc
 
 class Agent:
-    def __init__(self, openai_api_key: str = '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'):
+    def __init__(self, openai_api_key: str = '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'):
         # if openai_api_key is None, then it will look the enviroment variable OPENAI_API_KEY
         self.embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
         self.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
