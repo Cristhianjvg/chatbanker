@@ -41,7 +41,7 @@ class Agent:
                 response = self.chain({"question": question, "model":model, "chat_history": chat_history_tuples, "metadata": metadata})
                 
                 self.chat_history.append((question, response))
-                # print(type(response))
+                
                 source_documents = response.get('source_documents', [])
                 # print(type(source_documents))
                 response = response["answer"].strip()
