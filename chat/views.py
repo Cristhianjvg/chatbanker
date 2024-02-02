@@ -2,6 +2,7 @@
 from django.shortcuts import render
 import sys, os
 import re
+from chatbanker import settings
 from office365_api import SharePoint
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -10,7 +11,7 @@ from .Agent import Agent  # Asegúrate de importar correctamente tu clase Agent
 from pathlib import PurePath
 
 # Inicializa la instancia de Agent fuera de los métodos
-OPENAI_API_KEY = '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'
+OPENAI_API_KEY = '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'
 agent = Agent(OPENAI_API_KEY)
 
 @csrf_exempt
@@ -95,32 +96,48 @@ def chatprincipal(request):
         return render(request, "chatprincipal.html")
     
     
-def descargar_archivos(request):
-    # 1 args = SharePoint folder name. May include subfolders YouTube/2022
-    FOLDER_NAME = sys.argv[1]
-    # 2 args = locate or remote folder_dest
-    FOLDER_DEST = sys.argv[2]
-    # 3 args = SharePoint file name. This is used when only one file is being downloaded
-    # If all files will be downloaded, then set this value as "None"
-    FILE_NAME = sys.argv[3]
-    # 4 args = SharePoint file name pattern
-    # If no pattern match files are required to be downloaded, then set this value as "None"
-    FILE_NAME_PATTERN = sys.argv[4]
+import re
+from pathlib import PurePath
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 
-    if FILE_NAME != 'None':
-        file_obj = SharePoint().download_file(FILE_NAME, FOLDER_NAME)
-        file_dir_path = PurePath(FOLDER_DEST, FILE_NAME)
-        with open(file_dir_path, 'wb') as f:
-            f.write(file_obj)
-    elif FILE_NAME_PATTERN != 'None':
-        files_list = SharePoint()._get_files_list(FOLDER_NAME)
-        for file in files_list:
-            if re.search(FILE_NAME_PATTERN, file.name):  # Cambiado de "keyword" a "FILE_NAME_PATTERN"
-                file_obj = SharePoint().download_file(file.name, FOLDER_NAME)  # Usar el nombre del archivo actual
-                file_dir_path = PurePath(FOLDER_DEST, file.name)  # Usar el nombre del archivo actual
-                with open(file_dir_path, 'wb') as f:
-                    f.write(file_obj)
-    return HttpResponse("Descarga completada")
+@csrf_exempt
+def descargar_archivos(request):
+    if request.method == 'POST':
+        FOLDER_NAME = request.POST.get('folder_name')
+        FOLDER_DEST = request.POST.get('folder_dest')
+        FILE_NAME = request.POST.get('file_name')
+        FILE_NAME_PATTERN = request.POST.get('file_name_pattern')
+
+        if FILE_NAME != 'None':
+            file_obj = SharePoint().download_file(FILE_NAME, FOLDER_NAME)
+            file_dir_path = PurePath(FOLDER_DEST, FILE_NAME)
+            with open(file_dir_path, 'wb') as f:
+                f.write(file_obj)
+        elif FILE_NAME_PATTERN != 'None':
+            files_list = SharePoint()._get_files_list(FOLDER_NAME)
+            for file in files_list:
+                if re.search(FILE_NAME_PATTERN, file.name):
+                    file_obj = SharePoint().download_file(file.name, FOLDER_NAME)
+                    file_dir_path = PurePath(FOLDER_DEST, file.name)
+                    with open(file_dir_path, 'wb') as f:
+                        f.write(file_obj)
+        return HttpResponse("Descarga completada")
+    else:
+        return HttpResponse("Método no permitido")
+
+
+def lista_pdf(request):
+    # Directorio donde se almacenan los archivos PDF
+    directorio_pdf = settings.MEDIA_ROOT
+
+    # Obtener la lista de archivos PDF en el directorio
+    archivos_pdf = [archivo for archivo in os.listdir(directorio_pdf) if archivo.endswith('.pdf')]
+
+    # Imprimir los nombres de los archivos PDF
+    print("Archivos PDF encontrados:", archivos_pdf)
+
+    return render(request, 'listarpdf.html', {'archivos_pdf': archivos_pdf})
 
 # def save_file(file_n, file_obj):
 #     file_dir_path = PurePath(FOLDER_DEST, file_n)

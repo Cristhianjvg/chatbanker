@@ -14,7 +14,7 @@ import pickle
 from langchain_core.documents.base import Document as Doc
 
 class Agent:
-    def __init__(self, openai_api_key: str = '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'):
+    def __init__(self, openai_api_key: str = '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'):
         # if openai_api_key is None, then it will look the enviroment variable OPENAI_API_KEY
         self.embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
         self.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
@@ -40,8 +40,6 @@ class Agent:
                 model = 'gpt-3.5-turbo'
                 response = self.chain({"question": question, "model":model, "chat_history": chat_history_tuples, "metadata": metadata})
                 
-                print("segundo sel.chain")
-                print(self.chain)
                 self.chat_history.append((question, response))
                 # print(type(response))
                 source_documents = response.get('source_documents', [])
@@ -50,17 +48,21 @@ class Agent:
 
                 # Busca el documento de origen en los documentos fuente
                 for doc in source_documents:
-                    print(type(doc))
+                    # print(type(doc))
                     # doc = tuple
                     if isinstance(doc, Doc):
                         metadata = doc.metadata
                         if 'file_name' in metadata:
+                            
                             file_name = metadata['file_name']
-                            file_name = ' (' + file_name + '.pdf)'
-                response += '\n\n' + file_name
+                            page = str(metadata['page'])
+                            
+                            file_name = ' (' + file_name + '.pdf'
+                            page = ' - pag.' + page + ')'
+                            # page = ' - ' + page + '.)'
+                response += '\n\n' + file_name + page
             except Exception as e:
                 # Si algo va mal, actualiza la respuesta con un mensaje de error
-                print(e)
                 response = f"Se produjo un error al procesar la pregunta:  {str(e)}"
         return response
 
@@ -99,8 +101,6 @@ class Agent:
                 if self.chain is None and self.chat_history:
                     self.db = FAISS.from_documents(self.chat_history, self.embeddings)
                     self.chain = ConversationalRetrievalChain.from_llm(self.llm, self.db.as_retriever(), return_source_documents=True,)
-                    print("primer sel.chains")
-                    print(self.chain)
             except EOFError:
                 print("El archivo está vacío.")
                 self.chat_history = []

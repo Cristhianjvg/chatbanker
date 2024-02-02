@@ -28,11 +28,15 @@
                 </svg>
               CARGAR ARCHIVO 
               </button>
+              
             <div id="preloader" style="display: none;">
                 <img src='{% static "imagenes/cargando.gif" %}' width="120px" style="padding: -10px;" alt="Cargando...">
             </div>            
             <!-- <button >Cargar archivo</button> -->
         </form>
+        <!-- <button class="button1" style="margin-top: 10px; margin-left: 60px;">
+            CARGAR PDFS DE SHAREOPINT
+        </button> -->
     </section>
     
     <section id="chat-section" class="chatbot">
@@ -48,14 +52,7 @@
         </div>
     </section>
 
-    <!-- Ventan Modal -->
-<!-- 
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <p>Archivo subido exitosamente.</p>
-        </div>
-    </div> -->
+    <button > <a href="lista_pdf" style="text-decoration: none; color: white;">Inicio</a></button>
 
     <script>
         window.onload = function () {
@@ -73,23 +70,6 @@
         function archivoCargado() {
             alert("Archivo cargado con éxito.");
         }
-
-        // function sendMessage() {
-        //     document.getElementById('preloader2').style.display = 'block';
-        //     var userInput = document.getElementById("userInput");
-        //     var userMessage = userInput.value;
-        //     userInput.value = "";
-        //     if (message.trim() === "") {
-        //         return;
-        //     }
-        //     var chatbox = document.getElementById("chatbox");
-        //     chatbox.innerHTML += '<div class="message-container"><div class="user-message">' + userMessage + '</div></div>';
-
-        //     obtenerRespuesta(userMessage, function(response) {
-        //         addBotMessage(response);
-        //         document.getElementById('preloader2').style.display = 'none';
-        //     });
-        // }
         async function sendMessage() {
             const userInput = document.getElementById('userInput');
             const message = userInput.value;

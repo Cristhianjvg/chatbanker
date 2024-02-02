@@ -14,7 +14,8 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -52,10 +53,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'chatbanker.urls'
 
+#Cambios ale
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['template'],
+        'DIRS': [os.path.join(BASE_DIR, 'template')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -77,7 +79,8 @@ WSGI_APPLICATION = 'chatbanker.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+
     }
 }
 
@@ -128,5 +131,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#MEDIA_URL = '/template/'
-#MEDIA_ROOT = os.path.join(BASE_DIR, 'template')
+#Cambios ale
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

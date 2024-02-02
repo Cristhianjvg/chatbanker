@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <link type='text/css' href='{% static "css/listarpdf.css" %}' rel='stylesheet' />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RALP </title>
+    <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+    <link rel="icon" href='{% static "imagenes/Ralp.png" %}' type="image/png">
+
+</head>
+
+<body>
+    <img class="background-image" src='{% static "imagenes/imagen4.jpg" %}' alt="Imagen de fondo">
+    <section id="pdf-section" class="pdfsec">
+        <img src='{% static "imagenes/Ralp.png" %}' alt="" width="150px" style="padding: -20px; margin: -30px;">
+        <h2>Archivos PDF Disponibles:</h2>
+        <ul id="lista-pdf">
+            {% for archivo_pdf in archivos_pdf %}
+            <p class="visto">{{ archivo_pdf }}</p>
+            {% endfor %}
+        </ul>
+    </section>
+</body>
+
+</html>
