@@ -34,6 +34,12 @@
 >pip install office365
 
 
+>pip install faiss-gpu
+
+
+>pip install tiktoken
+
+
 <i>Comando para correr el programa<i/>
 
 >python manage.py runserver
