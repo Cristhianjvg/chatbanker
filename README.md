@@ -28,6 +28,12 @@
 >pip install pickle
 
 
+>pip install django-environ
+
+
+>pip install office365
+
+
 <i>Comando para correr el programa<i/>
 
 >python manage.py runserver
